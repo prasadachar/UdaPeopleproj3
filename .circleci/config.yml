@@ -60,7 +60,6 @@ jobs:
             npm i
             npm audit fix
             npm run test
-
 workflows:
   default:
     jobs:
