@@ -58,7 +58,7 @@ jobs:
           command: |
             cd backend
             npm i
-            npm audit --audit-level=critical
+            npm audit fix
             npm run test
 
 workflows:
