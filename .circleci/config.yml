@@ -38,7 +38,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build 
-      fail_only: true    
+        
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -52,7 +52,7 @@ jobs:
             cd frontend
             npm i
             npm run test
-      fail_only: true            
+                  
   test-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -67,7 +67,7 @@ jobs:
             npm i
             npm audit fix
             npm run test
-      fail_only: true      
+            
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -81,7 +81,7 @@ jobs:
             cd frontend
             npm i
             npm audit --audit-level=critical
-      fail_only: true          
+                
 
   scan-backend:
     docker:
@@ -93,10 +93,10 @@ jobs:
       - run:
           name: Scan backend    
           command: |
-            # cd backend
-            # npm i
+            cd backend
+            npm i
             npm audit fix --audit-level=critical 
-      fail_only: true             
+               
 workflows:
   default:
     jobs:
