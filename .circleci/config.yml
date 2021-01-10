@@ -118,6 +118,19 @@ jobs:
               --tags project=frontend-tag \
               --stack-name "Udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - run:
+          name: Add back-end ec2 ip to ansible inventory
+          command: |
+            export ec2backend_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=ec2backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text >> .circleci/ansible/inventory.txt)
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
+       #- auto-destruct-env # Here's where you will add some code to rollback on failure
+       # set to trigger email notification on failure
      
 workflows:
   default:
