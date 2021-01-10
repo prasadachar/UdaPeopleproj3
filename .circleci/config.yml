@@ -96,7 +96,21 @@ jobs:
             cd backend
             npm i
             npm audit fix --audit-level=critical 
-               
+            
+  deploy-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout #checkout code from git
+      - run:
+          name: Ensure back-end infrastructure exists #(deploying backend)
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags project=backend-tag \
+              --stack-name "Udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+     
 workflows:
   default:
     jobs:
@@ -109,5 +123,10 @@ workflows:
       - scan-backend:
           requires: [build-backend]
       - scan-frontend:
-          requires: [build-frontend]    
+          requires: [build-frontend] 
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [test-feature-branch]       
      
