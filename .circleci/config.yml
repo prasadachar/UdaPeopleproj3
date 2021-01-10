@@ -129,7 +129,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-       #- auto-destruct-env # Here's where you will add some code to rollback on failure
+       #destroy env # Here's where you will add some code to rollback on failure
        # set to trigger email notification on failure
      
 workflows:
