@@ -102,9 +102,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout #checkout code from git
-      - run:
       - run: yum install -y tar #(install dependencies)
       - run: yum install -y gzip #(install dependencies)
+      - run:
           name: Ensure back-end infrastructure exists #(deploying backend)
           command: |
             aws cloudformation deploy \
