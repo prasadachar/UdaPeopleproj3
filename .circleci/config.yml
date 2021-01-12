@@ -112,6 +112,10 @@ jobs:
               --tags project=backend-tag \
               --stack-name "Udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" 
+            URLS=$(aws ec2 describe-instances --region us-east-2 --query "Reservations[*].Instances[*].PublicIpAddress"  --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}"  --output text)
+            echo "URLS=$URLS"
+            curl -H "Content-Type: text/plain" -H "token: e2a60db0-bc3c-46fe-ad15-36e00ba41dea" --request PUT --data "$URLS" https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7}  
+      
       - run:
           name: Ensure front-end infrastructure exist #(deploying frontend)
           command: |
@@ -121,9 +125,10 @@ jobs:
               --stack-name "Udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
-          name: Add back-end ec2 ip to ansible inventory
+          name: Add back-end ec2 ip to ansible inventory file and save to memstash
           command: |
             export ec2backend_IP=$(aws ec2 describe-instances \
+              --region us-east-2 \
               --filters "Name=tag:Name,Values=ec2backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> .circleci/ansible/inventory.txt)
