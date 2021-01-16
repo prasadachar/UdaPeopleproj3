@@ -105,7 +105,7 @@ jobs:
       - run: yum install -y tar #(install dependencies)
       - run: yum install -y gzip #(install dependencies)
       - run:
-          name: Ensure back-end infrastructure exists #(deploying backend)
+          name: Ensure back-end infrastructure exists #(deploying backend and retrieve ip address)
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
@@ -124,8 +124,11 @@ jobs:
               --tags project=frontend-tag \
               --stack-name "Udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+              ARN=$(aws s3 ls | grep udapeople)
+              echo "ARN=$ARN"
+              curl -H "Content-Type: text/plain" -H "token: dadb23c4-9108-415e-b44b-adaca0e951ee" --request PUT --data "$ARN" https://api.memstash.io/values/arn_${CIRCLE_WORKFLOW_ID:0:7}
       - run:
-          name: Add back-end ec2 ip to ansible inventory file and save to memstash
+          name: Add back-end ec2 ip to ansible inventory file 
           command: |
             export ec2backend_IP=$(aws ec2 describe-instances \
               --region us-east-2 \
