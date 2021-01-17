@@ -139,7 +139,20 @@ jobs:
        #destroy env # Here's where you will add some code to rollback on failure
        #  set to trigger email notification on failure
 
-  
+  configure-infrastructure: # write code to setup EC2 to run as backend
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["84:ae:8c:a3:69:35:a3:13:d4:d0:3a:f7:5d:c3:db:c4"]
+      - attach workspace: # to get access to all files needed e.g. inventory.txt
+          at: ~/
+      - run: 
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip ansible nodejs npm curl
+            pip install awscli
   
 workflows:  
   default:
@@ -159,7 +172,7 @@ workflows:
           filters:
             branches:
               only: [master]
-      #- configure-infrastructure:
-       #   requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
           
      
