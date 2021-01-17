@@ -147,10 +147,17 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["7a:b6:90:79:69:78:bd:80:9f:75:ce:66:5a:71:bf:ad"]
       - attach workspace: # to get access to all files needed filters:
-            branches:
-              only: [test-feature-branch]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+          at: ~/
+      - run: 
+         name: Install dependencies
+         command: |
+           apk add --update tar gzip ansible ansible curl
+           pip install awscli
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible/
+            ansible-playbook -i inventory.txt main.yml
   default:
     jobs:
       - build-frontend
@@ -165,8 +172,8 @@ jobs:
           requires: [build-frontend] 
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-        #  filters:
-         #   branches:
+          filters:
+            branches:
               only: [test-feature-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
