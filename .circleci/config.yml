@@ -124,9 +124,9 @@ jobs:
               --tags project=frontend-tag \
               --stack-name "Udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-              ARN=$(aws s3 ls | grep udapeople)
-              echo "ARN=$ARN"
-              curl -H "Content-Type: text/plain" -H "token: dadb23c4-9108-415e-b44b-adaca0e951ee" --request PUT --data "$ARN" https://api.memstash.io/values/arn_${CIRCLE_WORKFLOW_ID:0:7}
+       #       ARN=$(aws s3 ls | grep udapeople)
+       #       echo "ARN=$ARN"
+       #       curl -H "Content-Type: text/plain" -H "token: dadb23c4-9108-415e-b44b-adaca0e951ee" --request PUT --data "$ARN" https://api.memstash.io/values/arn_${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Add back-end ec2 ip to ansible inventory file 
           command: |
@@ -141,7 +141,28 @@ jobs:
             - project/.circleci/ansible/inventory.txt
        #destroy env # Here's where you will add some code to rollback on failure
        # set to trigger email notification on failure
-     
+
+  configure-infrastructure:
+    docker:
+      - python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["7a:b6:90:79:69:78:bd:80:9f:75:ce:66:5a:71:bf:ad"]
+      - attach workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # Your code here
+            exit 1
+      - run:
+          name: Configure server
+          command: |
+            # Your code here- run ansible playbook
+            exit 1
+      # Here's where you will add some code to rollback on failure    
+
 workflows:
   default:
     jobs:
