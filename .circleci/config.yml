@@ -141,7 +141,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
        #destroy env # Here's where you will add some code to rollback on failure
-       # set to trigger email notification on failure
+       #  set to trigger email notification on failure
 
    
 
