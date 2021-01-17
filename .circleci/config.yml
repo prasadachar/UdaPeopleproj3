@@ -143,26 +143,7 @@ jobs:
        #destroy env # Here's where you will add some code to rollback on failure
        # set to trigger email notification on failure
 
-  configure-infrastructure:
-    docker:
-      - python:3.7-alpine3.11
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: ["7a:b6:90:79:69:78:bd:80:9f:75:ce:66:5a:71:bf:ad"]
-      - attach workspace:
-          at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            # Your code here
-            exit 1
-      - run:
-          name: Configure server
-          command: |
-            # Your code here- run ansible playbook
-            exit 1
-      # Here's where you will add some code to rollback on failure    
+   
 
 workflows:
   default:
