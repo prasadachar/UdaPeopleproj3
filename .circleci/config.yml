@@ -149,10 +149,10 @@ jobs:
       - attach workspace: # to get access to all files needed e.g. inventory.txt
           at: ~/
       - run: 
-         name: Install dependencies
-         command: |
-           apk add --update tar gzip ansible ansible nodejs npm curl
-           pip install awscli
+          name: Install dependencies
+          command: |
+            apk add --update tar gzip ansible ansible nodejs npm curl
+            pip install awscli
       
       - run:
           name: Setup inventory file
