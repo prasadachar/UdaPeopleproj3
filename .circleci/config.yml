@@ -82,7 +82,6 @@ jobs:
             npm i
             npm audit --audit-level=critical
                 
-
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -105,7 +104,7 @@ jobs:
       - run: yum install -y tar #(install dependencies)
       - run: yum install -y gzip #(install dependencies)
       - run:
-          name: Ensure back-end infrastructure exists #(deploying backend and retrieve ip address)
+          name: Ensure back-end infrastructure exists #(deploying backend and save ip address to memstash for frontend use)
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
