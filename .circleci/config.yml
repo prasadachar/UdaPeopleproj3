@@ -223,13 +223,6 @@ jobs:
             echo 'DISPLAY CONTENTS'
             echo '*****************'
             cat migrations_dump.txt
-           # if grep -q "has been executed successfully" migrations.txt; then 
-            #  curl -H "Content-Type: text/plain" -H "token: 41becf56-e770-4630-a0e7-4f17f1d66667" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
-            #else
-            #  curl -H "Content-Type: text/plain" -H "token: 41becf56-e770-4630-a0e7-4f17f1d66667" --request PUT --data "0" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
-            #fi
-            #SUCCESS=$(curl -H "token: 41becf56-e770-4630-a0e7-4f17f1d66667" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
-            #echo "${SUCCESS}"
       - run:
           name: Send migration results to memstash
           command: |
@@ -238,7 +231,7 @@ jobs:
             else
               curl -H "Content-Type: text/plain" -H "token: 41becf56-e770-4630-a0e7-4f17f1d66667" --request PUT --data "0" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi
-            SUCCESS=$(curl -H "token: 41becf56-e770-4630-a0e7-4f17f1d66667" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            SUCCESS=$(curl -H "token: 41becf56-e770-4630-a0e7-4f17f1d66667" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7})
             echo "${SUCCESS}" 
       - save_cache:
           paths: [backend/node_modules]
