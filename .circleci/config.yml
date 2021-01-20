@@ -236,7 +236,29 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-          
+       # Here's where you will add some code to rollback on failure
+  deploy-frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt install python-pip python-dev
+      - run:
+          name: Get backend url
+          command: |
+            BACKEND_IP=$(curl -H "token: 1e1e96f7-a791-42b5-b240-bd5407aa9c51" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+      - run:
+          name: Deploy frontend objects
+          command: |
+            cd frontend
+            npm run build
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
+
      # Here's where you will add some code to rollback on failure
 
 workflows:  
@@ -261,4 +283,6 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]    
-     
+      - deploy-frontend:
+          requires: [run-migrations]
+          
