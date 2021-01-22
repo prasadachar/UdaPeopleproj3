@@ -281,9 +281,15 @@ jobs:
             apk add --update tar gzip curl
             apk add --update openssh-client
       - run:
-          name: Deploy backend
+          name: Compress Backend
           command: |
-            # your code here
+            tar -C backend -czvf artifact.tar.gz .
+            ls -la
+      - run:
+          name: Deploy Backend
+          command: |
+            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+      
       # Here's where you will add some code to rollback on failure  
 
 workflows:  
