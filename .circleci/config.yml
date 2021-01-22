@@ -253,6 +253,7 @@ jobs:
           command: |
             BACKEND_IP=$(curl -H "token: 1e1e96f7-a791-42b5-b240-bd5407aa9c51" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
             export API_URL="http://${BACKEND_IP}:3030"
+            echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
@@ -264,6 +265,26 @@ jobs:
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
 
      # Here's where you will add some code to rollback on failure
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["84:ae:8c:a3:69:35:a3:13:d4:d0:3a:f7:5d:c3:db:c4"]
+      - attach_workspace: # to get access to previously generated inventory.txt
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+            apk add --update tar gzip curl
+            apk add --update openssh-client
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+      # Here's where you will add some code to rollback on failure  
 
 workflows:  
   default:
@@ -289,4 +310,5 @@ workflows:
           requires: [configure-infrastructure]    
       - deploy-frontend:
           requires: [run-migrations]
-          
+      - deploy-backend:
+          requires: [run-migrations]    
