@@ -256,7 +256,7 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
             echo "${API_URL}"
       - run:
-          name: Deploy frontend objects
+          name: Deploy frontend objects (bake ip backend API_URL into the frontend)
           command: |
             npm install webpack-dev-server -g
             cd frontend
