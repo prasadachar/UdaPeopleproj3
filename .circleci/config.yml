@@ -282,6 +282,14 @@ jobs:
             apk add --update tar gzip curl
             apk add --update openssh-client
       - run:
+          name: Setup inventory file
+          command: |
+            cd .circleci/ansible
+            echo "[web]" >> inventory.txt
+            URLS=$(curl -H "token: 675c0064-096f-44fc-9e01-9beb600dea74" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
+            echo $URLS >> inventory.txt
+            cat inventory.txt
+      - run:
           name: add values to env files 
           command: |
             echo ENVIROMENT=production >> "backend/.env"
