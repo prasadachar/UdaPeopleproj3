@@ -309,6 +309,7 @@ jobs:
             ls -la
       - run:
           name: Deploy Backend
+          no_output_timeout: 30m
           command: |
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       
