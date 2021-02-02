@@ -113,7 +113,7 @@ jobs:
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" 
             URLS=$(aws ec2 describe-instances --region us-east-2 --query "Reservations[*].Instances[*].PublicIpAddress"  --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}"  --output text)
             echo "URLS=$URLS" 
-            curl -H "Content-Type: text/plain" -H "token: 675c0064-096f-44fc-9e01-9beb600dea74" --request PUT --data "$URLS" https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7}  
+            curl -H "Content-Type: text/plain" -H "token: 1e1e96f7-a791-42b5-b240-bd5407aa9c51" --request PUT --data "$URLS" https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7}  
       
       - run:
           name: Ensure front-end infrastructure exist #(deploying frontend)
@@ -159,7 +159,7 @@ jobs:
           command: |
             cd .circleci/ansible
             echo "[web]" >> inventory.txt
-            URLS=$(curl -H "token: 675c0064-096f-44fc-9e01-9beb600dea74" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
+            URLS=$(curl -H "token: 1e1e96f7-a791-42b5-b240-bd5407aa9c51" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
             echo $URLS >> inventory.txt
             cat inventory.txt
       - run:
@@ -252,7 +252,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            BACKEND_IP=$(curl -H "token: 675c0064-096f-44fc-9e01-9beb600dea74" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
+            BACKEND_IP=$(curl -H "token: 1e1e96f7-a791-42b5-b240-bd5407aa9c51" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
             export API_URL="http://${BACKEND_IP}:3030"
             echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
             echo "${API_URL}"
@@ -286,7 +286,7 @@ jobs:
           command: |
             cd .circleci/ansible
             echo "[web]" >> inventory.txt
-            URLS=$(curl -H "token: 675c0064-096f-44fc-9e01-9beb600dea74" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
+            URLS=$(curl -H "token: 1e1e96f7-a791-42b5-b240-bd5407aa9c51" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
             echo $URLS >> inventory.txt
             cat inventory.txt
       - run:
@@ -327,7 +327,7 @@ jobs:
       - run:
           name: Get backend url and backend smoke test
           command: |
-            BACKEND_IP=$(curl -H "token: 675c0064-096f-44fc-9e01-9beb600dea74" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
+            BACKEND_IP=$(curl -H "token: 1e1e96f7-a791-42b5-b240-bd5407aa9c51" --request GET https://api.memstash.io/values/url_${CIRCLE_WORKFLOW_ID:0:7})
             URL="http://$BACKEND_IP:3030/api/status"
             echo $URL
             curl $URL
