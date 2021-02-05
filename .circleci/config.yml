@@ -2,7 +2,9 @@ version: 2.1
 
 #orbs:
   #slack: circleci/slack@3.4.2
-          
+
+
+
 jobs:
   build-frontend:
     docker:
@@ -346,7 +348,8 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://Udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-2.amazonaws.com\#\employee"
+            URL="http://Udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-2.amazonaws.com"
+            echo "$URL"
             if curl -s ${URL} | grep "Welcome"
             then
               return 0
@@ -354,6 +357,9 @@ jobs:
               return 1
             fi
       # Here's where you will add some code to rollback on failure 
+
+  
+            
 workflows:  
   default:
     jobs:
@@ -382,3 +388,7 @@ workflows:
           requires: [run-migrations]    
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]    
+    #  - cloudfront-update:
+     #     requires: [smoke-test]
+      #- cleanup:
+       #   requires: [cloudfront-update]    
