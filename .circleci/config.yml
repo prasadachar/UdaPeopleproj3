@@ -346,7 +346,7 @@ jobs:
             echo $URLS >> inventory.txt
             cat inventory.txt
       - run:
-          name: add values to env files 
+          name: add values to env files to EC2
           command: |
             echo ENVIROMENT=production >> "backend/.env"
             echo TYPEORM_CONNECTION=postgres >> "backend/.env"
@@ -369,8 +369,8 @@ jobs:
           command: |
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       
-      - revert-migrations
-      - destroy-environment
+      #- revert-migrations
+     # - destroy-environment
 
   smoke-test:
     docker: 
