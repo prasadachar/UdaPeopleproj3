@@ -3,45 +3,6 @@ version: 2.1
 #orbs:
   #slack: circleci/slack@3.4.2
 
-commands:
-  destroy-environment:
-    description: Destroy back-end and front-end cloudformation stacks given a workflow ID
-    parameters:
-      workflow-id:
-        type: string
-        default: ${CIRCLE_WORKFLOW_ID:0:7}
-    steps:
-      - run:
-          name: Destroy S3 Buckets
-          when: on_fail
-          command: |
-            aws s3 rm s3://Udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-            aws s3 rb s3://Udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} --force
-      - run:
-          name: Destroy Stacks
-          when: on_fail
-          command: |
-            aws cloudformation delete-stack --stack-name Udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
-            aws cloudformation delete-stack --stack-name Udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-      #- run:
-      #    name: Destroy Promotion Stack
-      #    when: on_fail
-      #    command: |
-      #      aws cloudformation delete-stack --stack-name udapeople-cloudfront
-  revert-migrations:
-    description: Roll back the last migration if successfully run in the current CICD
-    steps:
-      - run:
-          name: Revert migrations
-          when: on_fail
-          command: |
-            SUCCESS=$(curl -H "token: 41becf56-e770-4630-a0e7-4f17f1d66667" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7})
-            if(( SUCCESS==1 )); 
-            then
-              cd ~/project/backend
-              npm install
-              npm run migrations:revert
-            fi 
 jobs:
   build-frontend:
     docker:
@@ -178,8 +139,8 @@ jobs:
             - project/.circleci/ansible/inventory.txt
        #destroy env # Here's where you will add some code to rollback on failure
        #  set to trigger email notification on failure
-      - revert-migrations
-      - destroy-environment
+      #- revert-migrations
+      #- destroy-environment
 
   configure-infrastructure: # write code to setup EC2 to run as backend
     docker:
@@ -209,8 +170,8 @@ jobs:
           command: |
             cd .circleci/ansible/
             ansible-playbook -i inventory.txt main.yml
-      - revert-migrations
-      - destroy-environment  
+      #- revert-migrations
+      #- destroy-environment  
 
   run-migrations: #preparing data needed for backend application to run
     docker:
@@ -280,8 +241,8 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - revert-migrations
-      - destroy-environmen
+      #- revert-migrations
+      #- destroy-environmen
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
@@ -309,8 +270,8 @@ jobs:
             npm run build
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
 
-      - revert-migrations
-      - destroy-environment
+      #- revert-migrations
+      #- destroy-environment
 
   deploy-backend:
     docker:
@@ -359,8 +320,8 @@ jobs:
           command: |
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       
-      - revert-migrations
-      - destroy-environment
+      #- revert-migrations
+     # - destroy-environment
 
   smoke-test:
     docker: 
@@ -401,8 +362,8 @@ jobs:
             else
               return 1
             fi
-      - revert-migrations
-      - destroy-environment
+     # - revert-migrations
+      #- destroy-environment
 
   cloudfront-update:
     docker:
@@ -424,8 +385,8 @@ jobs:
               --stack-name udapeople-cloudfront \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
-      - revert-migrations
-      - destroy-environment
+    # - revert-migrations
+     # - destroy-environment
 #
   cleanup:
     docker:
@@ -457,8 +418,7 @@ jobs:
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
             fi
-  
-            
+           
 workflows:  
   default:
     jobs:
