@@ -282,7 +282,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
       - revert-migrations
-      - destroy-environmen
+      - destroy-environment
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
