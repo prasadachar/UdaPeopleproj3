@@ -3,7 +3,7 @@ version: 2.1
 #orbs:
   #slack: circleci/slack@3.4.2
 
-  commands:
+commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID
     parameters:
@@ -28,7 +28,6 @@ version: 2.1
       #    when: on_fail
       #    command: |
       #      aws cloudformation delete-stack --stack-name udapeople-cloudfront
-
   revert-migrations:
     description: Roll back the last migration if successfully run in the current CICD
     steps:
@@ -42,7 +41,7 @@ version: 2.1
               cd ~/project/backend
               npm install
               npm run migrations:revert
-            fi
+            fi 
 jobs:
   build-frontend:
     docker:
