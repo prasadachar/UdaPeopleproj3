@@ -12,6 +12,15 @@ commands:
         default: ${CIRCLE_WORKFLOW_ID:0:7}
     steps:
       - run:
+          name: Install AWS CLI if not Exist
+          when: on_fail
+          command: |
+            if ! [ -x "$(command -v aws)" ]; then
+            pip install awscli
+            else
+            echo "AWS CLI already installed"
+            fi
+      - run:
           name: Destroy S3 Buckets
           when: on_fail
           command: |
