@@ -380,8 +380,12 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+<<<<<<< HEAD
 #           #apk add --update tar gzip curl
             apk add --update tar gzip curl nodejs npm
+=======
+            apk add --update tar gzip curl nodejs npm 
+>>>>>>> 8eda287438b282854bd8256cd0bba36c65d25ed8
             pip install awscli
       - run:
           name: get backend URL and back end smoke test
