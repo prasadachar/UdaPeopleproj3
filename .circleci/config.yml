@@ -317,8 +317,7 @@ jobs:
             cd frontend
             npm install
             npm run build
-            npm audit fix --audit-level=critical --force
-            aws s3 cp ./frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
     #       aws s3 cp ./frontend/dist s3://udapeople-frontend-
       #- revert-migrations
      # - destroy-environment
