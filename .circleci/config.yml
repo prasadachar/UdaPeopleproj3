@@ -432,18 +432,18 @@ jobs:
           command: |
             aws cloudformation update-stack \
     #          --template-file .circleci/files/cloudfront.yml \
-            --use-previous-template \
-            --stack-name udapeople-cloudfront \
-            --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false
+              --use-previous-template \
+              --stack-name udapeople-cloudfront \
+              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false
     #          --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
-            --tags project=udapeople
+              --tags project=udapeople
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/oldworkflowid.txt            
       #- revert-migrations
       #- destroy-environment
-
+#
   cleanup:
     docker:
       - image: circleci/node:13.8.0
