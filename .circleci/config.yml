@@ -430,6 +430,7 @@ jobs:
       - run:
           name: Update cloudfront distribution
           command: |
+            cd .circleci/files
             aws cloudformation update-stack \
     #          --template-file .circleci/files/cloudfront.yml \
               --use-previous-template \
