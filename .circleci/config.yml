@@ -427,6 +427,7 @@ jobs:
             aws cloudformation \
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
             --region us-east-2 --no-paginate --output text >> ./.circleci/oldworkflowid.txt
+            
       - run:
           name: Update cloudfront distribution
           command: |
@@ -443,7 +444,7 @@ jobs:
             - project/.circleci/oldworkflowid.txt            
       #- revert-migrations
       #- destroy-environment
-
+#
   cleanup:
     docker:
       - image: circleci/node:13.8.0
