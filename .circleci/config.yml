@@ -453,15 +453,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum -y install tar gzip
+#            yum -y install tar gzip
+            sudo apt-get install -y tar
       - run:
-          name: Get old stack workflow id
-          command: |
-            # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
-      - run:
-          name: Remove old stacks and files
+          name: Get old stack workflow id and list of stacks
           command: |
             export OldWorkflowID=$(aws cloudformation \
               list-exports --query "Exports[?Name==\`WorkflowID\`].Value" 
@@ -470,6 +465,9 @@ jobs:
             export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
               --stack-status-filter CREATE_COMPLETE --no-paginate --output text)
             echo "${STACKS}"
+      
+     # Remove old stacks and files 
+            
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]; then
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
