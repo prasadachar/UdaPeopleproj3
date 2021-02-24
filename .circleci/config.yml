@@ -142,8 +142,12 @@ jobs:
           name: Scan backend    
           command: |
             cd backend
-            npm i
-            npm audit fix --audit-level=critical 
+            sudo npm install npm@latest -g
+            sudo npm i --save-dev standard-version
+            sudo npm i semver
+            sudo npm audit
+            npm audit fix 
+            sudo npm audit 
             
   deploy-infrastructure:
     docker:
