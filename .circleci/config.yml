@@ -146,7 +146,7 @@ jobs:
             sudo npm i --save-dev standard-version
             sudo npm i semver
             sudo npm audit
-            npm audit fix 
+            npm audit fix --force
             sudo npm audit 
             
   deploy-infrastructure:
