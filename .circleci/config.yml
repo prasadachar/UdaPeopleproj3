@@ -116,8 +116,7 @@ jobs:
     #        npm install npm@latest -g
             npm i
             npm audit fix
-            npm run test
-            
+            npm run test       
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
