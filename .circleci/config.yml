@@ -113,7 +113,6 @@ jobs:
           name: Back-end test
           command: |
             cd backend
-    #        npm install npm@latest -g
             npm i
             npm audit fix
             npm run test       
