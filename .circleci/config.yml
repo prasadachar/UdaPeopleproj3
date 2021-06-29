@@ -197,7 +197,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["84:ae:8c:a3:69:35:a3:13:d4:d0:3a:f7:5d:c3:db:c4"]
+          fingerprints: ["10:26:56:86:e6:3d:77:ef:d3:a1:b9:98:08:1c:c2:ca"]
       - attach_workspace: # to get access to all files needed e.g. inventory.txt
           at: ~/
       - run: 
@@ -253,11 +253,11 @@ jobs:
             echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
             echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+            echo TYPEORM_HOST=database-2.crcmxnn6pmse.us-west-1.rds.amazonaws.com >> "backend/.env"
+            echo TYPEORM_PORT=5432 >> "backend/.env"
+            echo TYPEORM_USERNAME=postgres >> "backend/.env"
+            echo TYPEORM_PASSWORD=password >> "backend/.env"
+            echo TYPEORM_DATABASE=prasad >> "backend/.env"
 
       - run:
           name: Run migrations
@@ -327,7 +327,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["84:ae:8c:a3:69:35:a3:13:d4:d0:3a:f7:5d:c3:db:c4"]
+          fingerprints: ["10:26:56:86:e6:3d:77:ef:d3:a1:b9:98:08:1c:c2:ca"]
       - attach_workspace: # to get access to previously generated inventory.txt
           at: ~/
       - run:
@@ -352,11 +352,11 @@ jobs:
             echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
             echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"           
+            echo TYPEORM_HOST=database-2.crcmxnn6pmse.us-west-1.rds.amazonaws.com >> "backend/.env"
+            echo TYPEORM_PORT=5432 >> "backend/.env"
+            echo TYPEORM_USERNAME=postgres >> "backend/.env"
+            echo TYPEORM_PASSWORD=password >> "backend/.env"
+            echo TYPEORM_DATABASE=prasad >> "backend/.env"           
       - run:
           name: Compress Backend
           command: |
